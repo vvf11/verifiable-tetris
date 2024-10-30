@@ -69,8 +69,7 @@ fn main() {
         };
         proof.save(&proof_path).expect("Failed to save proof");
     }
-
-    // Load the proof, extract the proof and public inputs, and serialize them to JSON.
+    // Load the proof, extract the proof and public inputs, and serialize the appropriate fields.
     let proof = SP1ProofWithPublicValues::load(&proof_path).expect("Failed to load proof");
     let fixture = ProofData {
         proof: hex::encode(proof.raw_with_checksum()),
@@ -78,8 +77,10 @@ fn main() {
         vkey_hash: vk.bytes32(),
         mode: args.mode,
     };
+
+    // Serialize the proof data to a JSON file.
     let json_proof = serde_json::to_string(&fixture).expect("Failed to serialize proof");
     std::fs::write(json_path, json_proof).expect("Failed to write JSON proof");
 
-    println!("Successfully serialized json proofs for the program!")
+    println!("Successfully generated json proof for the program!")
 }

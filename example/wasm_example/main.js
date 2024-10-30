@@ -21,7 +21,6 @@ for (const file of files) {
     try {
         // Read and parse the JSON content of the file
         const fileContent = fs.readFileSync(path.join("../json", file), 'utf8');
-
         const proof_json = JSON.parse(fileContent);
 
         // Determine the ZKP type (Groth16 or Plonk) based on the filename
