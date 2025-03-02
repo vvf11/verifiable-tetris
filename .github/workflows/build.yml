@@ -12,9 +12,7 @@ jobs:
         with:
           toolchain: nightly
           targets: wasm32-unknown-unknown
-          components: rustfmt, clippy
-      - name: Install Rust Source
-        run: rustup component add rust-src --toolchain nightly
+          components: rustfmt, clippy, rust-src
       - name: Install WASM Target
         run: rustup target add wasm32-unknown-unknown
       - name: Install SP1 Toolchain with sp1up
@@ -59,7 +57,7 @@ jobs:
       - name: Build Verifier WASM
         run: |
           cd verifier
-          cargo +nightly build --release --target wasm32-unknown-unknown --locked -Zbuild-std
+          cargo +nightly build --release --target wasm32-unknown-unknown --locked -Zbuild-std --no-default-features --features wasm
           wasm-bindgen --target web --no-typescript --out-dir ../ target/wasm32-unknown-unknown/release/tetris-verifier.wasm
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
