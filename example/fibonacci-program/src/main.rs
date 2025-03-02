@@ -1,37 +1,41 @@
-//! A simple program that takes a number `n` as input, and writes the `n-1`th and `n`th fibonacci
-//! number as an output.
-
-// These two lines are necessary for the program to properly compile.
-//
-// Under the hood, we wrap your main function with some extra code so that it behaves properly
-// inside the zkVM.
 #![no_main]
 sp1_zkvm::entrypoint!(main);
 
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
+struct Move {
+    action: String, // "ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"
+    score: u32,     // Счёт на момент хода
+    time: u32,      // Оставшееся время
+}
+
+#[derive(Serialize, Deserialize)]
+struct GameState {
+    moves: Vec<Move>,
+    final_score: u32,
+    final_time: u32,
+}
+
 pub fn main() {
-    // Read an input to the program.
-    //
-    // Behind the scenes, this compiles down to a system call which handles reading inputs
-    // from the prover.
-    let n = sp1_zkvm::io::read::<u32>();
+    // Читаем входные данные (состояние игры от JavaScript)
+    let game_state: GameState = sp1_zkvm::io::read();
 
-    // Write n to public input
-    sp1_zkvm::io::commit(&n);
-
-    // Compute the n'th fibonacci number, using normal Rust code.
-    let mut a = 0;
-    let mut b = 1;
-    for _ in 0..n {
-        let mut c = a + b;
-        c %= 7919; // Modulus to prevent overflow.
-        a = b;
-        b = c;
+    // Проверяем корректность счёта
+    let mut computed_score = 0;
+    for mov in &game_state.moves {
+        match mov.action.as_str() {
+            "ArrowDown" => computed_score += 1,  // +1 за движение вниз
+            "ArrowUp" => computed_score += 2,    // +2 за поворот (пример)
+            _ => (),                             // Другие ходы не влияют
+        }
     }
 
-    // Write the output of the program.
-    //
-    // Behind the scenes, this also compiles down to a system call which handles writing
-    // outputs to the prover.
-    sp1_zkvm::io::commit(&a);
-    sp1_zkvm::io::commit(&b);
+    // Убеждаемся, что счёт совпадает
+    assert_eq!(computed_score, game_state.final_score, "Счёт не совпадает!");
+    assert!(game_state.final_time <= 90, "Время превышено!");
+
+    // Делаем финальные значения публичными для проверки
+    sp1_zkvm::io::commit(&game_state.final_score);
+    sp1_zkvm::io::commit(&game_state.final_time);
 }
