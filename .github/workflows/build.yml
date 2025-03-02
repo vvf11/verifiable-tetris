@@ -8,9 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Rust
-        uses: actions/setup-rust@v1
+        uses: actions-rs/toolchain@v1
         with:
-          rust-version: 1.85
+          toolchain: 1.85 # Используем последнюю поддерживаемую версию Rust для SP1
           target: wasm32-unknown-unknown
           components: rustfmt, clippy
           override: true
