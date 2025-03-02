@@ -8,9 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Rust
-        uses: actions/setup-rust@v3
+        uses: actions/setup-rust@v1
         with:
-          rust-version: nightly # Переключаем на ночную версию Rust для поддержки -Zbuild-std
+          rust-version: 1.85
           target: wasm32-unknown-unknown
           components: rustfmt, clippy
           override: true
