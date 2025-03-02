@@ -10,14 +10,7 @@ jobs:
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable # Укажем стабильную версию, но можем уточнить 1.85
-          target: wasm32-unknown-unknown
-          components: rustfmt, clippy
-          override: true # Позволяет переопределить текущий toolchain
-      - name: Install Rust Toolchain for SP1
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: succinct # Устанавливаем кастомный toolchain 'succinct', если требуется
+          toolchain: 1.85 # Используем последнюю поддерживаемую версию Rust для SP1
           target: wasm32-unknown-unknown
           components: rustfmt, clippy
           override: true
