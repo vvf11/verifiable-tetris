@@ -1,3 +1,9 @@
+use vergen::EmitBuilder;
+
 fn main() {
-    println!("cargo:rerun-if-changed=build.rs"); // Пересобрать, если build.rs изменён
+    EmitBuilder::builder()
+        .build_timestamp()
+        .git_sha(true)
+        .emit()
+        .unwrap();
 }
