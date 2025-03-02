@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Rust
-        uses: actions/setup-rust@v1
+        uses: actions/setup-rust@v2
         with:
           rust-version: nightly # Используем ночную версию Rust для поддержки -Zbuild-std
           target: wasm32-unknown-unknown
