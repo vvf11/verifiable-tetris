@@ -10,10 +10,19 @@ jobs:
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: 1.85 # Используем последнюю поддерживаемую версию Rust для SP1
+          toolchain: stable # Устанавливаем стабильный Rust для начальной настройки
           target: wasm32-unknown-unknown
           components: rustfmt, clippy
           override: true
+      - name: Install SP1 Toolchain with sp1up
+        run: |
+          curl -L https://sp1up.succinct.xyz | bash
+          source ~/.bashrc || source ~/.zshrc # Активируем sp1up
+          sp1up
+      - name: Verify SP1 Installation
+        run: |
+          cargo prove --version
+          RUSTUP_TOOLCHAIN=succinct cargo --version
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
       - name: Clear Rust Cache
@@ -24,21 +33,16 @@ jobs:
         run: mkdir -p target
       - name: Set CARGO_TARGET_DIR
         run: echo "CARGO_TARGET_DIR=target" >> $GITHUB_ENV
-      - name: Ensure Git Repository for Vergen
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-      - name: Install SP1 CLI
-        run: |
-          cargo install --git https://github.com/succinctlabs/sp1.git --tag v4.1.2 --locked sp1-cli
+      - name: Set RUSTUP_TOOLCHAIN
+        run: echo "RUSTUP_TOOLCHAIN=succinct" >> $GITHUB_ENV
       - name: Build Tetris Program ELF
         run: |
           cd example/fibonacci-program
-          cargo prove build --locked --ignore-rust-version
+          cargo prove build --locked
       - name: Build Verifier WASM
         run: |
           cd verifier
-          cargo build --release --target wasm32-unknown-unknown --locked --ignore-rust-version
+          cargo build --release --target wasm32-unknown-unknown --locked
           wasm-bindgen --target web --no-typescript --out-dir ../ target/wasm32-unknown-unknown/release/tetris-verifier.wasm
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
