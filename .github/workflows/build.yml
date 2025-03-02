@@ -8,9 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Rust
-        uses: actions/setup-rust@v3
+        uses: actions-rs/toolchain@v1
         with:
-          rust-version: nightly # Переключаем на ночную версию Rust для поддержки -Zbuild-std
+          toolchain: 1.85 # Используем последнюю поддерживаемую версию Rust для SP1
           target: wasm32-unknown-unknown
           components: rustfmt, clippy
           override: true
@@ -36,11 +36,6 @@ jobs:
           RUSTUP_TOOLCHAIN=succinct cargo --version
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: './example/fibonacci-program ./verifier'
-          key: v1-rust-build-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            v1-rust-build-${{ runner.os }}-
       - name: Clear Rust Cache
         run: cargo clean
       - name: Set RUST_BACKTRACE
@@ -65,3 +60,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
+
