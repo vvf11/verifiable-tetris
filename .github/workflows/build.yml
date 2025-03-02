@@ -15,9 +15,11 @@ jobs:
           components: rustfmt, clippy
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
+      - name: Set RUST_BACKTRACE
+        run: echo "RUST_BACKTRACE=1" >> $GITHUB_ENV
       - name: Install SP1 CLI
         run: |
-          cargo install --git https://github.com/succinctlabs/sp1.git --locked sp1-cli
+          cargo install --git https://github.com/succinctlabs/sp1.git --rev v0.4.0 --locked sp1-cli
       - name: Build Tetris Program ELF
         run: |
           cd example/fibonacci-program
