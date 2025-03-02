@@ -22,3 +22,4 @@ getrandom = { version = "0.2.15", features = ["js"] }
 [features]
 default = ["network"]
 network = ["sp1-sdk/network"]
+wasm = []  # Добавляем фичу wasm
