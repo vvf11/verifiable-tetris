@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verifiable Tetris with ZKP</title>
+  <meta charset="UTF-8">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { background: black; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+    canvas { border: 1px solid white; }
+    #proof { color: white; font-family: Arial; margin-top: 10px; }
+  </style>
+</head>
+<body>
+<canvas width="320" height="640" id="game"></canvas>
+<div id="proof"></div>
+<script type="module">
+import init, { generate_proof } from './verifier.js';
+
+const grid = 32;
+let score = 0;
+let timeLeft = 90;
+let isPlaying = false;
+let gameOver = true;
+let rAF = null;
+let timerInterval = null;
+const playfield = [];
+const colors = { 'I': 'cyan', 'O': 'yellow', 'T': 'purple', 'S': 'green', 'Z': 'red', 'J': 'blue', 'L': 'orange' };
+const tetrominos = {
+  'I': [[0,0,0,0], [1,1,1,1], [0,0,0,0], [0,0,0,0]],
+  'J': [[1,0,0], [1,1,1], [0,0,0]],
+  'L': [[0,0,1], [1,1,1], [0,0,0]],
+  'O': [[1,1], [1,1]],
+  'S': [[0,1,1], [1,1,0], [0,0,0]],
+  'Z': [[1,1,0], [0,1,1], [0,0,0]],
+  'T': [[0,1,0], [1,1,1], [0,0,0]]
+};
+let tetromino = null;
+let count = 0;
+const canvas = document.getElementById('game');
+const context = canvas.getContext('2d');
+let gameState = { moves: [], finalScore: 0, finalTime: 0 };
+
+// [Вставьте все остальные функции Тетриса: startGame, loop, etc., без изменений]
+
+async function generateProof() {
+    await init(); // Инициализация WASM
+    const jsonInput = JSON.stringify(gameState);
+    try {
+        const proofResult = await generate_proof(jsonInput);
+        const result = JSON.parse(proofResult);
+        document.getElementById('proof').innerText = `ZKP: Score=${result.score}, Time=${result.time}, Proof=${result.proof.slice(0, 20)}...`;
+    } catch (e) {
+        document.getElementById('proof').innerText = `Ошибка генерации доказательства: ${e}`;
+    }
+}
+
+showStartScreen();
+</script>
+</body>
+</html>
