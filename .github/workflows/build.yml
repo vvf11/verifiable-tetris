@@ -14,6 +14,9 @@ jobs:
           target: wasm32-unknown-unknown
           components: rustfmt, clippy
           override: true
+      - name: Try to Install Succinct Toolchain
+        run: rustup toolchain install succinct --profile minimal || echo "Succinct toolchain not found, using 1.85"
+        continue-on-error: true # Продолжаем, если установка не удалась
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
       - name: Clear Rust Cache
