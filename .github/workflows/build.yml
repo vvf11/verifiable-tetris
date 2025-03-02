@@ -20,7 +20,8 @@ jobs:
           # Находим путь установки sp1up
           SP1UP_PATH=$(find /home/runner -name sp1up 2>/dev/null | head -n 1 | xargs dirname || echo "/home/runner/.sp1/bin")
           echo "SP1UP found at: $SP1UP_PATH"
-          # Добавляем путь в PATH
+          # Добавляем путь в PATH текущей сессии
+          export PATH="$SP1UP_PATH:$PATH"
           echo "$SP1UP_PATH" >> $GITHUB_PATH
           echo "/home/runner/.local/bin" >> $GITHUB_PATH
           # Проверяем, установлен ли sp1up
