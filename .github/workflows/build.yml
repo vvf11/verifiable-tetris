@@ -17,8 +17,11 @@ jobs:
       - name: Install SP1 Toolchain with sp1up
         run: |
           curl -L https://sp1up.succinct.xyz | bash -s -- --yes
-          # Активируем изменения в PATH
-          echo "/home/runner/.sp1/bin" >> $GITHUB_PATH
+          # Находим путь установки sp1up
+          SP1UP_PATH=$(find /home/runner -name sp1up 2>/dev/null | head -n 1 | xargs dirname || echo "/home/runner/.sp1/bin")
+          echo "SP1UP found at: $SP1UP_PATH"
+          # Добавляем путь в PATH
+          echo "$SP1UP_PATH" >> $GITHUB_PATH
           echo "/home/runner/.local/bin" >> $GITHUB_PATH
           # Проверяем, установлен ли sp1up
           which sp1up || (echo "sp1up not found in PATH"; exit 1)
