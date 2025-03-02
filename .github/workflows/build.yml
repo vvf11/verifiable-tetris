@@ -15,6 +15,8 @@ jobs:
           components: rustfmt, clippy
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
+      - name: Clear Rust Cache
+        run: cargo clean
       - name: Set RUST_BACKTRACE
         run: echo "RUST_BACKTRACE=1" >> $GITHUB_ENV
       - name: Install SP1 CLI
