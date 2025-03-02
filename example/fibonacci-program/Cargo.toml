@@ -13,4 +13,4 @@ vergen = { version = "8", default-features = false, features = ["build", "git", 
 
 [features]
 wasm = [] 
-default = []
+
