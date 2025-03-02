@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git", tag = "4.1.2", default-features = false, features = ["network"] }
+sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git", tag = "v4.1.2", default-features = false, features = ["network"] }
 serde = { version = "1.0", features = ["derive"] }
 
 [build-dependencies]
