@@ -19,6 +19,8 @@ jobs:
         run: cargo clean
       - name: Set RUST_BACKTRACE
         run: echo "RUST_BACKTRACE=1" >> $GITHUB_ENV
+      - name: Create target directory
+        run: mkdir -p target
       - name: Install SP1 CLI
         run: |
           cargo install --git https://github.com/succinctlabs/sp1.git --rev main --locked sp1-cli
