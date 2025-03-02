@@ -4,6 +4,6 @@ members = ["verifier", "example/fibonacci-program", "example/script"]
 resolver = "2"
 
 [workspace.dependencies]
-sp1-verifier = { git = "https://github.com/succinctlabs/sp1.git", rev = "main", default-features = false }
-sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git", rev = "main" }
-sp1-build = { git = "https://github.com/succinctlabs/sp1.git", rev = "main" }
+sp1-verifier = { git = "https://github.com/succinctlabs/sp1.git", tag = "v4.1.2", default-features = false }
+sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git", tag = "v4.1.2" }
+sp1-build = { git = "https://github.com/succinctlabs/sp1.git", tag = "v4.1.2" }
