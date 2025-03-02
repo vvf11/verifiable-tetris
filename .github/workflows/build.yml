@@ -8,12 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Rust
-        uses: actions/setup-rust@v1
+        uses: dtolnay/rust-toolchain@master
         with:
-          rust-version: nightly # Используем ночную версию Rust для поддержки -Zbuild-std
-          target: wasm32-unknown-unknown
+          toolchain: nightly
+          targets: wasm32-unknown-unknown
           components: rustfmt, clippy
-          override: true
       - name: Install WASM Target
         run: rustup target add wasm32-unknown-unknown
       - name: Install SP1 Toolchain with sp1up
@@ -54,7 +53,7 @@ jobs:
       - name: Build Tetris Program ELF
         run: |
           cd example/fibonacci-program
-          cargo +nightly prove build --locked # Используем ночную версию для всех шагов
+          cargo +nightly prove build --locked
       - name: Build Verifier WASM
         run: |
           cd verifier
