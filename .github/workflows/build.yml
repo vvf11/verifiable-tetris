@@ -21,9 +21,11 @@ jobs:
         run: echo "RUST_BACKTRACE=1" >> $GITHUB_ENV
       - name: Create target directory
         run: mkdir -p target
+      - name: Set CARGO_TARGET_DIR
+        run: echo "CARGO_TARGET_DIR=target" >> $GITHUB_ENV
       - name: Install SP1 CLI
         run: |
-          cargo install --git https://github.com/succinctlabs/sp1.git --rev main --locked sp1-cli
+          cargo install --git https://github.com/succinctlabs/sp1.git --tag v4.1.2 --locked sp1-cli
       - name: Build Tetris Program ELF
         run: |
           cd example/fibonacci-program
