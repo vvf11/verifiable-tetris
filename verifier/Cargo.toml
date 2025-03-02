@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-sp1-sdk = { git = "https://github.com/succinctlabs/sp1.git", tag = "v4.1.2", default-features = false }  # Убрали features = ["network"]
 sp1-verifier = { git = "https://github.com/succinctlabs/sp1.git", tag = "v4.1.2", default-features = false }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
@@ -15,10 +14,6 @@ getrandom = { version = "0.2.15", features = ["js"] }
 [lib]
 crate-type = ["cdylib"]
 
-[target.wasm32-unknown-unknown.dependencies]
-wasm-bindgen = "0.2"
-getrandom = { version = "0.2.15", features = ["js"] }
-
 [features]
-default = []  # Убрали "network" из default
-wasm = []     # Оставили только wasm
+default = []
+wasm = []
